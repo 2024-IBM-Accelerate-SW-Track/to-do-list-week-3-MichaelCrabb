@@ -1,5 +1,9 @@
-import { render, screen, fireEvent} from '@testing-library/react';
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { unmountComponentAtNode } from 'react-dom';
+import '@testing-library/jest-dom/extend-expect';
+import AddTodo from "./component//AddTodo.js";
+import TodoList from "./component//todos.js";
 import App from './App';
 
 let container = null;
@@ -16,28 +20,14 @@ afterEach(() => {
   container = null;
 });
 
-
-
-
- test('test that App component doesn\'t render dupicate Task', () => {
-  render(<App />);
- });
-
  test('test that App component doesn\'t add a task without task name', () => {
-  render(<App />);
- });
+    render(<App />);
 
- test('test that App component doesn\'t add a task without due date', () => {
-  render(<App />);
- });
+    const initialTasks = screen.queryAllByRole('listitem');
+    const addButton = screen.getByTestId('new-item-button');
 
+    fireEvent.click(addButton);
 
-
- test('test that App component can be deleted thru checkbox', () => {
-  render(<App />);
- });
-
-
- test('test that App component renders different colors for past due events', () => {
-  render(<App />);
+    const updatedTasks = screen.queryAllByRole('listitem');
+    expect(updatedTasks.length).toBe(initialTasks.length);
  });
